@@ -145,16 +145,25 @@ auto SpotifyClient::Helper::running(const QString &path) -> bool
 
 auto SpotifyClient::Helper::getOAuthSupport(const QString &path) -> bool
 {
-	if (clientType(path) != lib::client_type::librespot)
+	if (clientType(path) == lib::client_type::spotifyd)
 	{
-		return false;
+		const auto help = clientExec(path, {
+			QStringLiteral("auth"), QStringLiteral("--help"),
+		});
+
+		return !help.contains(QStringLiteral("error:"));
 	}
 
-	const auto help = clientExec(path, {
-		QStringLiteral("--help"),
-	});
+	if (clientType(path) == lib::client_type::librespot)
+	{
+		const auto help = clientExec(path, {
+			QStringLiteral("--help"),
+		});
 
-	return help.contains(QStringLiteral("--enable-oauth"));
+		return help.contains(QStringLiteral("--enable-oauth"));
+	}
+
+	return false;
 }
 
 auto SpotifyClient::Helper::processErrorToString(const QProcess::ProcessError error) -> QString
