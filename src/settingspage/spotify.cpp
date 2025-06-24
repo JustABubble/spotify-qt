@@ -71,7 +71,7 @@ auto SettingsPage::Spotify::spotify() -> QWidget *
 
 	// Executable settings
 	auto *pathBox = new QGroupBox(this);
-	pathBox->setTitle(QStringLiteral("Path to librespot or spotifyd"));
+	pathBox->setTitle(QStringLiteral("Path to librespot"));
 
 	auto *pathLayout = new QGridLayout();
 	pathBox->setLayout(pathLayout);
@@ -85,7 +85,7 @@ auto SettingsPage::Spotify::spotify() -> QWidget *
 	QAbstractButton::connect(sptPathBrowse, &QAbstractButton::clicked,
 		[this](bool /*checked*/)
 		{
-			auto filePath = QFileDialog::getOpenFileName(this, "Client path", "/");
+			auto filePath = QFileDialog::getOpenFileName(this, "librespot path", "/");
 			if (!filePath.isEmpty() && sptPath != nullptr)
 			{
 				sptPath->setText(filePath);
@@ -94,7 +94,7 @@ auto SettingsPage::Spotify::spotify() -> QWidget *
 	pathLayout->addWidget(sptPathBrowse, 0, 1);
 
 	// Client version
-	sptVersion = new QLabel(QStringLiteral("(no client provided)"), this);
+	sptVersion = new QLabel(QStringLiteral("(no librespot path provided)"), this);
 	if (!settings.spotify.path.empty())
 	{
 		const auto path = QString::fromStdString(settings.spotify.path);
@@ -107,8 +107,7 @@ auto SettingsPage::Spotify::spotify() -> QWidget *
 
 	// Start with app
 	sptAppStart = new QCheckBox("Start with app", this);
-	sptAppStart->setToolTip("Start, and close, spotify client together with the app "
-							"(only closes when using app config)");
+	sptAppStart->setToolTip("Start, and close, spotify client together with the app");
 	sptAppStart->setChecked(settings.spotify.start_client);
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 7, 0)
