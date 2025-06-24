@@ -1,8 +1,7 @@
 #include "settingspage/application.hpp"
 
-#include <util/font.hpp>
-
 #include "mainwindow.hpp"
+#include "util/font.hpp"
 
 SettingsPage::Application::Application(lib::settings &settings, QWidget *parent)
 	: SettingsPage::Base(settings, parent)
