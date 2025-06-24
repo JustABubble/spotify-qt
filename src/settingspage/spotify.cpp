@@ -61,7 +61,10 @@ auto SettingsPage::Spotify::spotify() -> QWidget *
 	warningLayout->addWidget(warningIcon);
 
 	auto *warningText = new QLabel(this);
-	warningText->setText(QStringLiteral("spotifyd support is deprecated"));
+	warningText->setText(QStringLiteral(
+		"spotifyd support is deprecated, please use librespot instead, or start it manually outside %1."
+	).arg(APP_NAME));
+	warningText->setWordWrap(true);
 	warningLayout->addWidget(warningText, 1);
 
 	clientWarning = new QGroupBox(this);
