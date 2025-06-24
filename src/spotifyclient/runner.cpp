@@ -125,7 +125,7 @@ void SpotifyClient::Runner::start()
 			"--no-daemon",
 			"--initial-volume", initialVolume,
 			"--device-name", deviceName,
-			"--config-path", QString::fromStdString(getCachePath().string()),
+			"--cache-path", QString::fromStdString(getCachePath().string()),
 		});
 	}
 
