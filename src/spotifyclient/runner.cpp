@@ -92,6 +92,15 @@ void SpotifyClient::Runner::start()
 			return;
 		}
 
+		if (clientType == lib::client_type::spotifyd)
+		{
+			emit statusChanged(QStringLiteral(
+				"Logging in with spotifyd is currently not supported, "
+				"please login manually, or with another client to continue"
+			));
+			return;
+		}
+
 		arguments.append(QStringLiteral("--enable-oauth"));
 	}
 
