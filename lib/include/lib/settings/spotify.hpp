@@ -38,6 +38,7 @@ namespace lib
 			/**
 			 * Use global config instead of config in settings
 			 */
+			[[deprecated("spotifyd only")]]
 			bool global_config = false;
 
 			/**

@@ -51,6 +51,24 @@ auto SettingsPage::Spotify::spotify() -> QWidget *
 	auto *content = new QVBoxLayout();
 	content->setAlignment(Qt::AlignTop);
 
+	auto *warningLayout = new QHBoxLayout();
+	warningLayout->setAlignment(Qt::AlignLeft);
+
+	auto *warningIcon = new QLabel(this);
+	const auto warningIconSize = QApplication::style()->pixelMetric(QStyle::PM_LargeIconSize);
+	const auto warningPixmap = Icon::get(QStringLiteral("data-warning")).pixmap(warningIconSize, warningIconSize);
+	warningIcon->setPixmap(warningPixmap);
+	warningLayout->addWidget(warningIcon);
+
+	auto *warningText = new QLabel(this);
+	warningText->setText(QStringLiteral("spotifyd support is deprecated"));
+	warningLayout->addWidget(warningText, 1);
+
+	clientWarning = new QGroupBox(this);
+	clientWarning->setLayout(warningLayout);
+	clientWarning->setVisible(clientType() == lib::client_type::spotifyd);
+	content->addWidget(clientWarning);
+
 	// Executable settings
 	auto *pathBox = new QGroupBox(this);
 	pathBox->setTitle(QStringLiteral("Path to librespot or spotifyd"));
@@ -302,6 +320,12 @@ auto SettingsPage::Spotify::save() -> bool
 		{
 			settings.spotify.path = sptPath->text().toStdString();
 		}
+
+		if (clientWarning != nullptr)
+		{
+			const auto clientType = SpotifyClient::Helper::clientType(sptPath->text());
+			clientWarning->setVisible(clientType == lib::client_type::spotifyd);
+		}
 	}
 
 	// librespot has no global config support
@@ -417,6 +441,11 @@ auto SettingsPage::Spotify::getPath() const -> QString
 auto SettingsPage::Spotify::backends() -> QStringList
 {
 	return SpotifyClient::Helper::availableBackends(getPath());
+}
+
+auto SettingsPage::Spotify::clientType() const -> lib::client_type
+{
+	return SpotifyClient::Helper::clientType(getPath());
 }
 
 auto SettingsPage::Spotify::deviceTypes() -> QList<lib::device_type>

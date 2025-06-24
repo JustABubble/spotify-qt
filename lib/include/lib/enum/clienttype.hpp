@@ -5,7 +5,7 @@ namespace lib
 	/**
 	 * Supported Spotify clients
 	 */
-	enum class client_type: unsigned char
+	enum class [[deprecated("only librespot is supported")]] client_type: unsigned char
 	{
 		/**
 		 * No client
