@@ -33,6 +33,10 @@ MainWindow::MainWindow(lib::settings &settings, lib::paths &paths,
 	}
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
+	AppConfig::defaultStyleName = QApplication::style()->name();
+#endif
+
 	Style::apply(this, settings);
 
 	// Update player status

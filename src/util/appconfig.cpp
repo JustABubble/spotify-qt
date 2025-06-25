@@ -3,6 +3,8 @@
 #include <QApplication>
 #include <QStyle>
 
+QString AppConfig::defaultStyleName = QString();
+
 auto AppConfig::useNativeMenuBar() -> bool
 {
 #ifdef __APPLE__
