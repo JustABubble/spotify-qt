@@ -1,11 +1,12 @@
 #include "settingspage/interface.hpp"
 #include "mainwindow.hpp"
 #include "lib/system.hpp"
+#include "util/appconfig.hpp"
 #include "util/widget.hpp"
 
 #include <QFontDialog>
-#include <QStandardPaths>
 #include <QSettings>
+#include <QStandardPaths>
 
 SettingsPage::Interface::Interface(lib::settings &settings, QWidget *parent)
 	: SettingsPage::Base(settings, parent)
@@ -562,6 +563,11 @@ void SettingsPage::Interface::darkThemeToggle(bool checked)
 
 auto SettingsPage::Interface::defaultStyle() -> QString
 {
+	if (!AppConfig::defaultStyleName.isEmpty())
+	{
+		return AppConfig::defaultStyleName;
+	}
+
 	// Find default style on KDE
 	const auto &path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation,
 		"kdeglobals");
