@@ -33,10 +33,9 @@ parts:
     build-snaps:
       - core24
       - kf6-core24
-      - qt-common-themes
     override-prime: |
       # Remove duplicate files in the dependent snaps from the final snap.
-      for snap in "core24" "kf6-core24" "qt-common-themes"; do
+      for snap in "core24" "kf6-core24"; do
           cd "/snap/$snap/current" && find . -type f,l ! -xtype d -print | sed "s|^./|$CRAFT_PRIME|" | xargs rm -f
           cd "/snap/$snap/current" && find . -type f,l ! -xtype d -print | sed "s|^./|$CRAFT_PRIME/usr|" | xargs rm -f
       done
