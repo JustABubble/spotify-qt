@@ -16,6 +16,7 @@ jobs:
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2025.1
         with:
+          args: --linter,jetbrains/qodana-clang:2024.3-eap
           push-fixes: pull-request
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
