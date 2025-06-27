@@ -15,6 +15,7 @@
 #include <QLabel>
 #include <QMenu>
 #include <QResizeEvent>
+#include <QMouseEvent>
 
 namespace Context
 {
@@ -54,5 +55,6 @@ namespace Context
 
 	private:
 		void onSongMenu(const QPoint &pos);
+		void mouseDoubleClickEvent(QMouseEvent *event) override;
 	};
 }

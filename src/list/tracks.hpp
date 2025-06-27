@@ -24,6 +24,8 @@ namespace List
 		void setPlayingTrackItem(QTreeWidgetItem *item);
 		void setPlayingTrackItem(const std::string &itemId);
 
+		QTreeWidgetItem *getPlayingTrackItem();
+
 		/**
 		 * Load tracks directly, without cache, but select an item
 		 * @deprecated Use with page instead

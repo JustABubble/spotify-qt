@@ -1,4 +1,5 @@
 #include "view/context/abstractcontent.hpp"
+#include "list/tracks.hpp"
 #include "mainwindow.hpp"
 
 Context::AbstractContent::AbstractContent(lib::spt::api &spotify, const lib::cache &cache,
@@ -42,6 +43,32 @@ void Context::AbstractContent::onSongMenu(const QPoint &pos)
 
 	auto *menu = new Menu::Track(track, spotify, cache, parentWidget());
 	menu->popup(mapToGlobal(pos));
+}
+
+void Context::AbstractContent::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	event->accept();
+
+	auto *mainWindow = MainWindow::find(parent());
+	if (mainWindow == nullptr)
+	{
+		return;
+	}
+
+	auto *tracks = mainWindow->getSongsTree();
+	if (tracks == nullptr)
+	{
+		return;
+	}
+
+	auto *playingTrack = tracks->getPlayingTrackItem();
+	if (playingTrack == nullptr)
+	{
+		return;
+	}
+
+	tracks->setCurrentItem(playingTrack);
+	tracks->scrollToItem(playingTrack);
 }
 
 void Context::AbstractContent::reset()

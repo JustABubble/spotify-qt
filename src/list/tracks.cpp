@@ -794,6 +794,11 @@ void List::Tracks::setPlayingTrackItem(const std::string &itemId)
 		: nullptr);
 }
 
+QTreeWidgetItem *List::Tracks::getPlayingTrackItem()
+{
+	return playingTrackItem;
+}
+
 auto List::Tracks::getCurrent() -> const spt::Current &
 {
 	auto *mainWindow = MainWindow::find(parentWidget());
