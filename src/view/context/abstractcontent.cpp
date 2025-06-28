@@ -45,10 +45,8 @@ void Context::AbstractContent::onSongMenu(const QPoint &pos)
 	menu->popup(mapToGlobal(pos));
 }
 
-void Context::AbstractContent::mouseDoubleClickEvent(QMouseEvent *event)
+void Context::AbstractContent::mouseDoubleClickEvent(QMouseEvent */*event*/)
 {
-	event->accept();
-
 	auto *mainWindow = MainWindow::find(parent());
 	if (mainWindow == nullptr)
 	{
@@ -61,14 +59,33 @@ void Context::AbstractContent::mouseDoubleClickEvent(QMouseEvent *event)
 		return;
 	}
 
-	auto *playingTrack = tracks->getPlayingTrackItem();
-	if (playingTrack == nullptr)
+	const auto playback = mainWindow->playback();
+	const auto contextId = lib::spt::uri_to_id(playback.context.uri);
+	if (playback.context.type == "album")
 	{
-		return;
+		mainWindow->loadAlbum(contextId);
+	}
+	else if (playback.context.type == "playlist")
+	{
+		for (auto i = 0; i < mainWindow->getPlaylistItemCount(); ++i)
+		{
+			const auto *playlistItem = mainWindow->getPlaylistItem(i);
+			const auto &playlistData = playlistItem->data(static_cast<int>(DataRole::Playlist));
+			const auto playlist = playlistData.value<lib::spt::playlist>();
+			if (playlist.id == contextId) {
+				mainWindow->setCurrentPlaylistItem(playlistItem->data(static_cast<int>(DataRole::Index)).toInt());
+				mainWindow->refreshPlaylists();
+				tracks->load(playlist);
+			}
+		}
 	}
 
-	tracks->setCurrentItem(playingTrack);
-	tracks->scrollToItem(playingTrack);
+	auto *playingTrack = tracks->getPlayingTrackItem();
+	if (playingTrack != nullptr)
+	{
+		tracks->setCurrentItem(playingTrack);
+		tracks->scrollToItem(playingTrack);
+	}
 }
 
 void Context::AbstractContent::reset()
